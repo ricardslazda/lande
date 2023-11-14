@@ -1,0 +1,186 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Lande Finance Application API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/loan-schedule/calculate": {
+            "post": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "Calculate Loan Schedule",
+                "operationId": "2afeb1aec2b8d890fecb39217d910c00",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "interestRateBasis",
+                                    "euriborRateBasis",
+                                    "term"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "1000000"
+                                    },
+                                    "interestRateBasis": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "400"
+                                    },
+                                    "euriborRateBasis": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "394"
+                                    },
+                                    "term": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "12"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Loan schedule has been calculated successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "loanId": {
+                                            "type": "int64",
+                                            "example": "10"
+                                        },
+                                        "segments": {
+                                            "type": "string",
+                                            "example": "[{'segmentNumber': 1, 'principalPaymentInCents': 80344, 'interestPaymentInCents': 3333, 'euriborPaymentInCents': 3283, 'totalPaymentInCents': 86960}]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request body validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string",
+                                            "example": "false"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request body validation error."
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "['The amount field must be a number.']"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/loan-schedule/adjust-euribor": {
+            "post": {
+                "tags": [
+                    "Loans"
+                ],
+                "summary": "Adjust Loan Schedule Euribor Rate",
+                "operationId": "02dfac27208d80d8b68ecc9b8f128495",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "loanId",
+                                    "euriborAdjustments"
+                                ],
+                                "properties": {
+                                    "loanId": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "10"
+                                    },
+                                    "euriborAdjustments[12]": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "357"
+                                    },
+                                    "euriborAdjustments[24]": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "653"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Euribor has been adjusted successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "loanId": {
+                                            "type": "int64",
+                                            "example": "10"
+                                        },
+                                        "segments": {
+                                            "type": "string",
+                                            "example": "[{'segmentNumber': 1, 'principalPaymentInCents': 80344, 'interestPaymentInCents': 3333, 'euriborPaymentInCents': 3283, 'totalPaymentInCents': 86960}]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request body validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "string",
+                                            "example": "false"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request body validation error."
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "['The loanId field must be a number.']"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
